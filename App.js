@@ -1,13 +1,21 @@
 import { StyleSheet, View } from 'react-native';
+import { NativeRouter, Routes, Route, Navigate } from 'react-router-native';
 import AppBar from './src/components/AppBar';
 import RepositoryList from './src/components/RepositoryList';
+import SignIn from './src/components/SignIn';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <AppBar />
-      <RepositoryList />
-    </View>
+    <NativeRouter>
+      <View style={styles.container}>
+        <AppBar />
+        <Routes>
+          <Route path="/" element={<RepositoryList />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </View>
+    </NativeRouter>
   );
 }
 
