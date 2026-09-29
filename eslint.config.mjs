@@ -12,5 +12,8 @@ export default defineConfig([
         version: "19.2.3",
       },
     },
+    rules: {
+      "react/prop-types": "off",
+    },
   },
 ]);
