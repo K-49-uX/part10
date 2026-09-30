@@ -1,14 +1,30 @@
-/* global process */
-import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
-// ... rest of your code
+import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
 
-const httpLink = new HttpLink({
-  uri: process.env.EXPO_PUBLIC_APOLLO_URI,
+const httpLink = createHttpLink({
+  uri: 'http://localhost:4000/graphql',
 });
 
-const createApolloClient = () => {
+const createApolloClient = (authStorage) => {
+  const authLink = setContext(async (_, { headers }) => {
+    try {
+      const accessToken = await authStorage.getAccessToken();
+      return {
+        headers: {
+          ...headers,
+          authorization: accessToken ? `Bearer ${accessToken}` : '',
+        },
+      };
+    } catch (e) {
+      console.log(e);
+      return {
+        headers,
+      };
+    }
+  });
+
   return new ApolloClient({
-    link: httpLink,
+    link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
   });
 };

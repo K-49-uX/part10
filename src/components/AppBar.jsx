@@ -1,38 +1,60 @@
-import { View, StyleSheet, Pressable, Text, ScrollView } from 'react-native';
-import Constants from 'expo-constants';
-import { Link } from 'react-router-native';
+import { View, StyleSheet, ScrollView, Pressable, Text } from 'react-native';
+import { Link, useNavigate } from 'react-router-native';
+import { useQuery, useApolloClient } from '@apollo/client/react';
+import { ME } from '../graphql/queries';
+import useAuthStorage from '../hooks/useAuthStorage';
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Constants.statusBarHeight,
+    paddingTop: 40,
     backgroundColor: '#24292e',
-  },
-  scrollView: {
     flexDirection: 'row',
-    padding: 15,
   },
   tab: {
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    marginRight: 15,
+    paddingHorizontal: 15,
+    paddingVertical: 15,
   },
-  text: {
-    color: '#ffffff',
+  tabText: {
+    color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
   },
 });
 
 const AppBar = () => {
+  const { data } = useQuery(ME);
+  const authStorage = useAuthStorage();
+  const apolloClient = useApolloClient();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await authStorage.removeAccessToken();
+    await apolloClient.resetStore();
+    navigate('/signin');
+  };
+
+  const user = data?.me;
+
   return (
     <View style={styles.container}>
-      <ScrollView horizontal contentContainerStyle={styles.scrollView}>
-        <Link to="/" component={Pressable} style={styles.tab}>
-          <Text style={styles.text}>Repositories</Text>
-        </Link>
-        <Link to="/signin" component={Pressable} style={styles.tab}>
-          <Text style={styles.text}>Sign in</Text>
-        </Link>
+      <ScrollView horizontal>
+        <Pressable style={styles.tab}>
+          <Link to="/">
+            <Text style={styles.tabText}>Repositories</Text>
+          </Link>
+        </Pressable>
+
+        {user ? (
+          <Pressable style={styles.tab} onPress={handleSignOut}>
+            <Text style={styles.tabText}>Sign out</Text>
+          </Pressable>
+        ) : (
+          <Pressable style={styles.tab}>
+            <Link to="/signin">
+              <Text style={styles.tabText}>Sign in</Text>
+            </Link>
+          </Pressable>
+        )}
       </ScrollView>
     </View>
   );
