@@ -5,8 +5,12 @@ import AppBar from './src/components/AppBar';
 import RepositoryList from './src/components/RepositoryList';
 import SignIn from './src/components/SignIn';
 import createApolloClient from './src/utils/apolloClient';
+import AuthStorage from './src/utils/authStorage';
+import AuthStorageContext from './src/contexts/AuthStorageContext';
 
-const apolloClient = createApolloClient();
+const authStorage = new AuthStorage();
+const apolloClient = createApolloClient(authStorage);
+
 export default function App() {
   console.log('AppBar:', AppBar);
   console.log('RepositoryList:', RepositoryList);
@@ -16,14 +20,16 @@ export default function App() {
   return (
     <NativeRouter>
       <ApolloProvider client={apolloClient}>
-        <View style={styles.container}>
-          <AppBar />
-          <Routes>
-            <Route path="/" element={<RepositoryList />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </View>
+        <AuthStorageContext.Provider value={authStorage}>
+          <View style={styles.container}>
+            <AppBar />
+            <Routes>
+              <Route path="/" element={<RepositoryList />} />
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </View>
+        </AuthStorageContext.Provider>
       </ApolloProvider>
     </NativeRouter>
   );

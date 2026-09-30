@@ -1,6 +1,7 @@
 import { View, TextInput, Pressable, Text, StyleSheet } from 'react-native';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { useNavigate } from 'react-router-native';
 import useSignIn from '../hooks/useSignIn';
 
 const styles = StyleSheet.create({
@@ -53,6 +54,7 @@ const initialValues = {
 
 const SignIn = () => {
   const [signIn] = useSignIn();
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues,
@@ -61,8 +63,8 @@ const SignIn = () => {
       const { username, password } = values;
 
       try {
-        const { data } = await signIn({ username, password });
-        console.log(data);
+        await signIn({ username, password });
+        navigate('/'); // Redirect to the repositories list view
       } catch (e) {
         console.log(e);
       }
