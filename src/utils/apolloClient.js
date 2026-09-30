@@ -1,7 +1,9 @@
+/* global process */
 import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
+// ... rest of your code
 
 const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/graphql',
+  uri: process.env.EXPO_PUBLIC_APOLLO_URI,
 });
 
 const createApolloClient = () => {
