@@ -1,4 +1,4 @@
-import { FlatList, View, StyleSheet, Pressable, Text } from 'react-native';
+import { FlatList, View, StyleSheet, Pressable, Text, TextInput } from 'react-native';
 import RepositoryItem from './RepositoryItem';
 
 const styles = StyleSheet.create({
@@ -8,6 +8,14 @@ const styles = StyleSheet.create({
   header: {
     padding: 16,
     backgroundColor: '#fff',
+  },
+  searchInput: {
+    backgroundColor: '#f0edf5',
+    borderRadius: 24,
+    fontSize: 16,
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+    marginBottom: 12,
   },
   selector: {
     paddingVertical: 12,
@@ -37,6 +45,8 @@ const ItemSeparator = () => <View style={styles.separator} />;
 export const RepositoryListContainer = ({
   repositories,
   error,
+  filterKeyword = '',
+  onFilterKeywordChange,
   onSelectRepository,
   sortLabel = 'Latest repositories',
   menuVisible = false,
@@ -51,6 +61,15 @@ export const RepositoryListContainer = ({
     <FlatList
       ListHeaderComponent={
         <View style={styles.header}>
+          <TextInput
+            accessibilityLabel="Search repositories"
+            placeholder="Search repositories"
+            value={filterKeyword}
+            onChangeText={onFilterKeywordChange}
+            style={styles.searchInput}
+            autoCapitalize="none"
+            returnKeyType="search"
+          />
           <Pressable
             accessibilityRole="button"
             accessibilityState={{ expanded: menuVisible }}
