@@ -55,13 +55,20 @@ const AppBar = () => {
               <Text style={styles.tabText}>Sign out</Text>
             </Pressable>
           </>
-        ) : (
-          <Pressable style={styles.tab}>
-            <Link to="/signin">
-              <Text style={styles.tabText}>Sign in</Text>
-            </Link>
-          </Pressable>
-        )}
+        ) : data ? (
+          <>
+            <Pressable style={styles.tab}>
+              <Link to="/signin">
+                <Text style={styles.tabText}>Sign in</Text>
+              </Link>
+            </Pressable>
+            <Pressable style={styles.tab}>
+              <Link to="/signup">
+                <Text style={styles.tabText}>Sign up</Text>
+              </Link>
+            </Pressable>
+          </>
+        ) : null}
       </ScrollView>
     </View>
   );
