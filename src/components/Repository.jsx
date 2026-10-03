@@ -17,6 +17,7 @@ const ItemSeparator = () => <View style={styles.separator} />;
 const Repository = () => {
   const { id } = useParams();
   const { data, loading } = useQuery(GET_REPOSITORY, {
+    fetchPolicy: 'cache-and-network',
     variables: { id },
     skip: !id,
   });

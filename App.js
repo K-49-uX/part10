@@ -5,6 +5,7 @@ import AppBar from './src/components/AppBar';
 import RepositoryList from './src/components/RepositoryList';
 import SignIn from './src/components/SignIn';
 import Repository from './src/components/Repository';
+import CreateReview from './src/components/CreateReview';
 import createApolloClient from './src/utils/apolloClient';
 import AuthStorage from './src/utils/authStorage';
 import AuthStorageContext from './src/contexts/AuthStorageContext';
@@ -27,6 +28,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<RepositoryList />} />
               <Route path="/repositories/:id" element={<Repository />} />
+              <Route path="/review" element={<CreateReview />} />
               <Route path="/signin" element={<SignIn />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
