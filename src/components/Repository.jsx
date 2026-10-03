@@ -1,4 +1,5 @@
 import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
+import { useState } from 'react';
 import { useQuery } from '@apollo/client/react';
 import { useParams } from 'react-router-native';
 import { GET_REPOSITORY } from '../graphql/queries';
@@ -16,9 +17,10 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 const Repository = () => {
   const { id } = useParams();
-  const { data, loading } = useQuery(GET_REPOSITORY, {
+  const [loadingMore, setLoadingMore] = useState(false);
+  const { data, loading, fetchMore } = useQuery(GET_REPOSITORY, {
     fetchPolicy: 'cache-and-network',
-    variables: { id },
+    variables: { id, first: 5 },
     skip: !id,
   });
 
@@ -26,7 +28,21 @@ const Repository = () => {
     return <View testID="repositoryLoading"><ActivityIndicator /></View>;
   }
 
-  const reviews = data.repository.reviews?.edges.map(edge => edge.node) ?? [];
+  const reviewConnection = data.repository.reviews;
+  const reviews = reviewConnection?.edges.map(edge => edge.node) ?? [];
+
+  const loadMoreReviews = async () => {
+    if (loadingMore || !reviewConnection?.pageInfo?.hasNextPage) return;
+
+    setLoadingMore(true);
+    try {
+      await fetchMore({
+        variables: { after: reviewConnection.pageInfo.endCursor },
+      });
+    } finally {
+      setLoadingMore(false);
+    }
+  };
 
   return (
     <FlatList
@@ -37,6 +53,9 @@ const Repository = () => {
         <RepositoryItem item={data.repository} showGitHubButton />
       }
       ItemSeparatorComponent={ItemSeparator}
+      onEndReached={loadMoreReviews}
+      onEndReachedThreshold={0.5}
+      ListFooterComponent={loadingMore ? <ActivityIndicator /> : null}
     />
   );
 };
