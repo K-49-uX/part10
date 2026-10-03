@@ -7,6 +7,7 @@ import SignIn from './src/components/SignIn';
 import Repository from './src/components/Repository';
 import CreateReview from './src/components/CreateReview';
 import SignUp from './src/components/SignUp';
+import MyReviews from './src/components/MyReviews';
 import createApolloClient from './src/utils/apolloClient';
 import AuthStorage from './src/utils/authStorage';
 import AuthStorageContext from './src/contexts/AuthStorageContext';
@@ -30,6 +31,7 @@ export default function App() {
               <Route path="/" element={<RepositoryList />} />
               <Route path="/repositories/:id" element={<Repository />} />
               <Route path="/review" element={<CreateReview />} />
+              <Route path="/reviews" element={<MyReviews />} />
               <Route path="/signin" element={<SignIn />} />
               <Route path="/signup" element={<SignUp />} />
               <Route path="*" element={<Navigate to="/" replace />} />
