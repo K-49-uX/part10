@@ -25,6 +25,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     marginTop: 2,
   },
+  submitError: {
+    color: '#d73a4a',
+    fontSize: 14,
+    marginTop: 10,
+  },
   button: {
     backgroundColor: '#0366d6',
     height: 50,
@@ -91,6 +96,11 @@ const SignInContainer = ({ onSubmit }) => {
       <Pressable style={styles.button} onPress={formik.handleSubmit}>
         <Text style={styles.buttonText}>Sign in</Text>
       </Pressable>
+      {formik.status ? (
+        <Text accessibilityRole="alert" style={styles.submitError}>
+          {formik.status}
+        </Text>
+      ) : null}
     </View>
   );
 };

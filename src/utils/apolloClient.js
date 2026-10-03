@@ -1,8 +1,14 @@
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
+import { Platform } from 'react-native';
 import { setContext } from '@apollo/client/link/context';
 
+const apiUri =
+  Platform.OS === 'android'
+    ? process.env.EXPO_PUBLIC_APOLLO_URI_ANDROID || 'http://10.0.2.2:4000/graphql'
+    : process.env.EXPO_PUBLIC_APOLLO_URI || 'http://localhost:4000/graphql';
+
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000/graphql',
+  uri: apiUri,
 });
 
 const createApolloClient = (authStorage) => {
