@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, Pressable, Linking } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -61,6 +61,18 @@ const styles = StyleSheet.create({
     color: '#586069',
     fontSize: 12,
   },
+  githubButton: {
+    backgroundColor: '#0366d6',
+    borderRadius: 4,
+    padding: 12,
+    marginTop: 15,
+    alignItems: 'center',
+  },
+  githubButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
 
 const formatCount = (count) => {
@@ -70,7 +82,7 @@ const formatCount = (count) => {
   return count;
 };
 
-const RepositoryItem = ({ item }) => {
+const RepositoryItem = ({ item, showGitHubButton = false }) => {
   return (
     <View testID="repositoryItem" style={styles.container}>
       <View style={styles.topContainer}>
@@ -104,6 +116,15 @@ const RepositoryItem = ({ item }) => {
           <Text style={styles.statLabel}>Rating</Text>
         </View>
       </View>
+      {showGitHubButton && (
+        <Pressable
+          accessibilityRole="button"
+          style={styles.githubButton}
+          onPress={() => Linking.openURL(item.url)}
+        >
+          <Text style={styles.githubButtonText}>Open in GitHub</Text>
+        </Pressable>
+      )}
     </View>
   );
 };

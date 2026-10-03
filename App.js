@@ -4,6 +4,7 @@ import { ApolloProvider } from '@apollo/client/react';
 import AppBar from './src/components/AppBar';
 import RepositoryList from './src/components/RepositoryList';
 import SignIn from './src/components/SignIn';
+import Repository from './src/components/Repository';
 import createApolloClient from './src/utils/apolloClient';
 import AuthStorage from './src/utils/authStorage';
 import AuthStorageContext from './src/contexts/AuthStorageContext';
@@ -25,6 +26,7 @@ export default function App() {
             <AppBar />
             <Routes>
               <Route path="/" element={<RepositoryList />} />
+              <Route path="/repositories/:id" element={<Repository />} />
               <Route path="/signin" element={<SignIn />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
