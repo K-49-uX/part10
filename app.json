@@ -21,6 +21,18 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "0c64d026-7b5f-4a4e-8f7a-2b6a4ba9b5e7"
+      }
+    },
+    "owner": "kevinkeygahungu",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/0c64d026-7b5f-4a4e-8f7a-2b6a4ba9b5e7"
     }
   }
 }
